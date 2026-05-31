@@ -1,0 +1,22 @@
+FROM groonga/pgroonga:latest-17 AS build
+
+ARG PG_REPACK_VERSION=1.5.3
+
+RUN apt-get update \
+ && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    build-essential \
+    curl \
+    postgresql-server-dev-17 \
+    zlib1g-dev \
+    clang \
+    llvm \
+    gawk \
+ && curl -fsSL -o /tmp/pg_repack.tar.gz https://github.com/reorg/pg_repack/archive/refs/tags/ver_${PG_REPACK_VERSION}.tar.gz \
+ && tar -xzf /tmp/pg_repack.tar.gz -C /tmp \
+ && make -C /tmp/pg_repack-ver_${PG_REPACK_VERSION} \
+ && make -C /tmp/pg_repack-ver_${PG_REPACK_VERSION} install \
+ && rm -rf /var/lib/apt/lists/* /tmp/pg_repack.tar.gz /tmp/pg_repack-ver_${PG_REPACK_VERSION}
+
+FROM groonga/pgroonga:latest-17
+COPY --from=build /usr/local/lib/postgresql/pg_repack.so /usr/local/lib/postgresql/pg_repack.so
+COPY --from=build /usr/local/share/postgresql/extension/pg_repack* /usr/local/share/postgresql/extension/
