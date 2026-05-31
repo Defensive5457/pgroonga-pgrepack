@@ -11,7 +11,10 @@ RUN set -eux; \
       gnupg \
       build-essential \
       postgresql-server-dev-17 \
-      zlib1g-dev; \
+      zlib1g-dev \
+      libzstd-dev \
+      liblz4-dev \
+      libreadline-dev; \
     install -d /usr/share/postgresql-common/pgdg; \
     curl -fsSL https://packages.groonga.org/debian/groonga-apt-source-latest-bookworm.deb -o /tmp/groonga-apt-source.deb; \
     apt-get install -y --no-install-recommends /tmp/groonga-apt-source.deb; \
@@ -23,5 +26,5 @@ RUN set -eux; \
     make -C "/tmp/pg_repack-ver_${PG_REPACK_VERSION}"; \
     make -C "/tmp/pg_repack-ver_${PG_REPACK_VERSION}" install; \
     rm -rf /tmp/pg_repack.tar.gz "/tmp/pg_repack-ver_${PG_REPACK_VERSION}"; \
-    apt-get purge -y --auto-remove build-essential postgresql-server-dev-17 zlib1g-dev; \
+    apt-get purge -y --auto-remove build-essential postgresql-server-dev-17 zlib1g-dev libzstd-dev liblz4-dev libreadline-dev; \
     rm -rf /var/lib/apt/lists/*
