@@ -17,7 +17,7 @@ RUN set -eux; \
     apt-get install -y --no-install-recommends /tmp/groonga-apt-source.deb; \
     rm -f /tmp/groonga-apt-source.deb; \
     apt-get update; \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends postgresql-17-pgroonga; \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends postgresql-17-pgdg-pgroonga; \
     curl -fsSL -o /tmp/pg_repack.tar.gz "https://github.com/reorg/pg_repack/archive/refs/tags/ver_${PG_REPACK_VERSION}.tar.gz"; \
     tar -xzf /tmp/pg_repack.tar.gz -C /tmp; \
     make -C "/tmp/pg_repack-ver_${PG_REPACK_VERSION}"; \
